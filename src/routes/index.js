@@ -12,6 +12,8 @@ router.post('/employee', employee.createEmployee)
 
 router.get('/employee', employee.getAllEmployees)
 
+router.get('/employee/:_id', employee.getEmployee)
+
 module.exports = { 
   router
 }

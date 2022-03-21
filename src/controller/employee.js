@@ -68,3 +68,18 @@ exports.getAllEmployees = async (req, res, next) => {
     res.status(500).json(error)
   }
 }
+
+exports.getEmployee = async (req, res, next) => {
+  try {
+
+    const employee = await employeemodel.findById(req.params._id)
+
+    if(!employee){
+      res.status(404).json('Id not found')
+    }
+
+    res.status(200).json(employee)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
