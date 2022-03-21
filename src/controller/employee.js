@@ -1,6 +1,7 @@
 const employeemodel = require('../model/employee')
 const joi = require('@hapi/joi')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 const schema = joi.object({
@@ -143,12 +144,11 @@ exports.loginEmployee = async (req, res, next) => {
       res.status(400).json(valid)
     }
 
-    const emailExists = await employeemodel.findOne({
+    const employee = await employeemodel.findOne({
       email: req.body.email
     })
-      console.log(emailExists)
 
-    if(!emailExists) {
+    if(!employee) {
       res.status(400).json(
         'Login failed'
       )
@@ -156,16 +156,20 @@ exports.loginEmployee = async (req, res, next) => {
 
     const validatePassword = await bcrypt.compare(
       req.body.password,
-      emailExists.password
+      employee.password
       )
 
     if(!validatePassword) {
       return res.status(400).send('Login failed')
-    } 
+    }
+
+    const jwtToken = jwt.sign({
+      data: employee
+    }, 'secret', { expiresIn: '1h' })
     
-    res.status(201).json(
-      'login done'
-    )
+    res.header('auth-token', jwtToken)
+    res.status(201).json(employee)
+
   } catch (error) {
     console.log(error)
     res.status(500).json(err)

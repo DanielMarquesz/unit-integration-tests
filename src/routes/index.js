@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const controller = require('../controller/employee')
+const verifyToken = require('../utils/verify')
 
 router.get('/', (req, res) => {
   res.json({
@@ -16,7 +17,7 @@ router.get('/employee/:_id', controller.getEmployeeById)
 
 router.put('/employee/:_id', controller.updateEmployeeById)
 
-router.delete('/employee/:_id', controller.deleteEmployeeById)
+router.delete('/employee/:_id', verifyToken, controller.deleteEmployeeById)
 
 router.post('/employee/login', controller.loginEmployee)
 
