@@ -22,6 +22,18 @@ const schema = joi.object({
     .string()
 })
 
+const schemaLogin = joi.object({
+  email: joi
+    .string()
+    .required()
+    .email(),
+  password: joi
+    .string()
+    .min(6)
+    .max(12)
+    .required()
+})
+
 exports.createEmployee = async (req, res, next) => {
   try {
 
@@ -31,9 +43,9 @@ exports.createEmployee = async (req, res, next) => {
       res.status(400).json(valid)
     }
 
-    const emailExists = await(employeemodel.findOne({
+    const emailExists = await employeemodel.findOne({
       email: req.body.email
-    }))
+    })
 
     if(emailExists) {
       res.status(400).json(
@@ -119,5 +131,43 @@ exports.deleteEmployeeById = async (req, res, next) => {
     res.send().status(200)
   } catch (error) {
     res.status(500).json(error)
+  }
+}
+
+exports.loginEmployee = async (req, res, next) => {
+  try {
+
+    const valid = schemaLogin.validate(req.body)
+
+    if(valid.error || valid.errors){
+      res.status(400).json(valid)
+    }
+
+    const emailExists = await employeemodel.findOne({
+      email: req.body.email
+    })
+      console.log(emailExists)
+
+    if(!emailExists) {
+      res.status(400).json(
+        'Login failed'
+      )
+    }
+
+    const validatePassword = await bcrypt.compare(
+      req.body.password,
+      emailExists.password
+      )
+
+    if(!validatePassword) {
+      return res.status(400).send('Login failed')
+    } 
+    
+    res.status(201).json(
+      'login done'
+    )
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(err)
   }
 }

@@ -18,6 +18,8 @@ router.put('/employee/:_id', controller.updateEmployeeById)
 
 router.delete('/employee/:_id', controller.deleteEmployeeById)
 
+router.post('/employee/login', controller.loginEmployee)
+
 module.exports = { 
   router
 }
