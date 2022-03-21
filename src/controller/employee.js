@@ -54,3 +54,17 @@ exports.createEmployee = async (req, res, next) => {
     res.status(500).json(err)
   }
 }
+
+exports.getAllEmployees = async (req, res, next) => {
+  try {
+    const employees = await employeemodel.find()
+
+    if(!employees){
+      res.status(404).json('No employees found')
+    }
+
+    res.status(200).json(employees)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}

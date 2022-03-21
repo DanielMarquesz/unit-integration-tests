@@ -8,14 +8,9 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/', (req, res) => {
-  res.json({
-    status: 'API is Working',
-    message: 'Welcome to the employee api router'
-  })
-})
-
 router.post('/employee', employee.createEmployee)
+
+router.get('/employee', employee.getAllEmployees)
 
 module.exports = { 
   router
