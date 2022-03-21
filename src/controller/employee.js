@@ -69,7 +69,7 @@ exports.getAllEmployees = async (req, res, next) => {
   }
 }
 
-exports.getEmployee = async (req, res, next) => {
+exports.getEmployeeById = async (req, res, next) => {
   try {
 
     const employee = await employeemodel.findById(req.params._id)
@@ -79,6 +79,44 @@ exports.getEmployee = async (req, res, next) => {
     }
 
     res.status(200).json(employee)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+exports.updateEmployeeById = async (req, res, next) => {
+  try {
+
+    const employee = await employeemodel.findByIdAndUpdate(
+      req.params._id,
+      req.body,
+      {
+        useFindAndModify: false
+      }
+    )
+
+    if(!employee){
+      res.status(404).json('Id not found')
+    }
+
+    res.status(201).json(employee)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+exports.deleteEmployeeById = async (req, res, next) => {
+  try {
+
+    const employee = await employeemodel.findByIdAndDelete(
+      req.params._id      
+    )
+
+    if(!employee){
+      res.status(404).json('Id not found')
+    }
+
+    res.send().status(200)
   } catch (error) {
     res.status(500).json(error)
   }

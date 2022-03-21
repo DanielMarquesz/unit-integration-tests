@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const employee = require('../controller/employee')
+const controller = require('../controller/employee')
 
 router.get('/', (req, res) => {
   res.json({
@@ -8,11 +8,15 @@ router.get('/', (req, res) => {
   })
 })
 
-router.post('/employee', employee.createEmployee)
+router.post('/employee', controller.createEmployee)
 
-router.get('/employee', employee.getAllEmployees)
+router.get('/employee', controller.getAllEmployees)
 
-router.get('/employee/:_id', employee.getEmployee)
+router.get('/employee/:_id', controller.getEmployeeById)
+
+router.put('/employee/:_id', controller.updateEmployeeById)
+
+router.delete('/employee/:_id', controller.deleteEmployeeById)
 
 module.exports = { 
   router
