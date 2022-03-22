@@ -1,0 +1,24 @@
+[
+  {
+     "_id":{
+        "$oid":"6239005d2cba04dc94ea7f21"
+     },
+     "name":"Robin woood",
+     "email":"ro@gmail.com",
+     "created_at":{
+        "$date":"2022-03-21T22:46:53.667Z"
+     },
+     "__v":0
+  },
+  {
+    "_id":{
+       "$oid":"6239005d2cba04dc94ea0000"
+    },
+    "name":"Daniel Marques",
+    "email":"daniel@gmail.com",
+    "created_at":{
+       "$date":"2022-03-21T22:46:53.667Z"
+    },
+    "__v":0
+ }
+]

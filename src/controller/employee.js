@@ -88,12 +88,17 @@ exports.getEmployeeById = async (req, res, next) => {
     const employee = await employeemodel.findById(req.params._id)
 
     if(!employee){
-      res.status(404).json('Id not found')
+      res.status(404).json(
+        {
+          message: "Employee not found"
+        }
+      ).send()
+      return
     }
-
+    
     res.status(200).json(employee)
   } catch (error) {
-    res.status(500).json(error)
+    res. status(500).send(error)
   }
 }
 
