@@ -72,8 +72,11 @@ exports.getAllEmployees = async (req, res, next) => {
   try {
     const employees = await employeemodel.find()
 
-    if(!employees){
-      res.status(404).json('No employees found')
+    if(!employees.length){
+      res.status(404).json({
+        message: 'No employees found'
+      }).send()
+      return
     }
 
     res.status(200).json(employees)
