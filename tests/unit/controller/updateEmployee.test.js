@@ -40,4 +40,24 @@ describe('controller.updateEmployeeById', () => {
     expect(res.statusCode).toStrictEqual(201)
     expect(res._getData()).toStrictEqual(JSON.stringify(req.body))
   })
+
+  it('Should return status code 404 when not found the employee', async () => {
+    let dataToUpdate = {...mockEmployee[0], phone:"0878667"}
+    model.findByIdAndUpdate.mockResolvedValue(undefined)
+    req.params._id = mockEmployee[0]._id
+    req.body = {...dataToUpdate}
+
+    await controller.updateEmployeeById(req, res, next)
+
+    expect(model.findByIdAndUpdate).toBeCalledTimes(1)
+    expect(model.findByIdAndUpdate).toBeCalledWith(
+      req.params._id,
+      req.body,
+        {
+          useFindAndModify: false
+        }
+      )
+    expect(res.statusCode).toStrictEqual(404)
+    expect(res._getData()).toStrictEqual("{\"message\":\"Id not found\"}")
+  })
 })

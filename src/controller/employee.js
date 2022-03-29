@@ -117,7 +117,12 @@ exports.updateEmployeeById = async (req, res, next) => {
     )
 
     if(!employee){
-      res.status(404).json('Id not found')
+      res.status(404).json(
+        {
+          message: "Id not found"
+        }
+      ).send()
+      return
     }
 
     res.status(201).json(employee)
