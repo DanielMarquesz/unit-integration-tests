@@ -139,10 +139,15 @@ exports.deleteEmployeeById = async (req, res, next) => {
     )
 
     if(!employee){
-      res.status(404).json('Id not found')
+      res.status(404).json(
+        {
+          message: 'Id not found'
+        }
+      ).send()
+      return
     }
 
-    res.send().status(200)
+    res.status(200).send()
   } catch (error) {
     res.status(500).json(error)
   }
@@ -185,6 +190,11 @@ exports.loginEmployee = async (req, res, next) => {
 
   } catch (error) {
     console.log(error)
-    res.status(500).json(err)
+    res.status(500).json(
+      {
+        message: "Internal Server Error",
+        error: err
+      }
+    )
   }
 }
