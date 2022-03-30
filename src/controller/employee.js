@@ -38,6 +38,7 @@ const schemaLogin = joi.object({
 exports.createEmployee = async (req, res, next) => {
   try {
 
+    // return directly the valid data
     const valid = schema.validate(req.body)
 
     if(valid.error || valid.errors){
