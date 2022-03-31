@@ -42,8 +42,7 @@ exports.createEmployee = async (req, res, next) => {
     const valid = schema.validate(req.body)
 
     if(valid.error || valid.errors){
-      res.status(400).json(valid)
-      return
+      return res.status(400).json(valid)      
     }
 
     const emailExists = await employeemodel.findOne({
@@ -51,10 +50,9 @@ exports.createEmployee = async (req, res, next) => {
     })
 
     if(emailExists) {
-      res.status(400).json(
+      return res.status(400).json(
         'Invalid Email'
-      )
-      return
+      )      
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -76,10 +74,9 @@ exports.getAllEmployees = async (req, res, next) => {
     const employees = await employeemodel.find()
 
     if(!employees.length){
-      res.status(404).json({
+      return res.status(404).json({
         message: 'No employees found'
-      }).send()
-      return
+      })      
     }
 
     res.status(200).json(employees)
@@ -94,12 +91,11 @@ exports.getEmployeeById = async (req, res, next) => {
     const employee = await employeemodel.findById(req.params._id)
 
     if(!employee){
-      res.status(404).json(
+      return res.status(404).json(
         {
           message: "Employee not found"
         }
-      ).send()
-      return
+      )      
     }
     
     res.status(200).json(employee)
