@@ -43,6 +43,7 @@ exports.createEmployee = async (req, res, next) => {
 
     if(valid.error || valid.errors){
       res.status(400).json(valid)
+      return
     }
 
     const emailExists = await employeemodel.findOne({
@@ -53,6 +54,7 @@ exports.createEmployee = async (req, res, next) => {
       res.status(400).json(
         'Invalid Email'
       )
+      return
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -65,7 +67,7 @@ exports.createEmployee = async (req, res, next) => {
     })
   } catch (error) {
     console.log(error)
-    res.status(500).json(err)
+    res.status(500).json(error)
   }
 }
 

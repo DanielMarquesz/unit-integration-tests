@@ -31,7 +31,7 @@ describe("Controller - Create Employee", () => {
     model.create.mockResolvedValue(mockEmployee)
     model.findOne.mockResolvedValue(false)
     bcrypt.hash.mockReturnValue('some string')
-    bcrypt;bcrypt.genSalt.mockReturnValue(10)
+    bcrypt.genSalt.mockReturnValue(10)
 
     await controller.createEmployee(req, res, next)
 
@@ -44,5 +44,24 @@ describe("Controller - Create Employee", () => {
       }
    })
    expect(model.create).toHaveBeenCalledWith({...mockEmployee, password:"some string"})
+  })
+
+  it('Should try to create a user that already exists', async () => {
+    model.create.mockResolvedValue(mockEmployee)
+    model.findOne.mockResolvedValue(true)
+
+    await controller.createEmployee(req, res, next)
+
+    expect(res.statusCode).toBe(400)
+  })
+
+
+  it('Should fell in the catch block', async () => {
+    model.findOne.mockRejectedValue()
+
+    await controller.createEmployee(req, res, next)
+
+    expect(res.statusCode).toBe(500)
+    expect(res._getData()).toBe("")
   })
 })
